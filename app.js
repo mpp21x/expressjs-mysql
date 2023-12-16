@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var connection = require('./src/db/connection');
+var getConnection = require('./src/db/connection');
 
 var app = express();
 
@@ -40,8 +40,8 @@ app.use(function(err, req, res, next) {
 });
 
 (async function() {
-  const conn = await connection();
-  const result =await conn.execute('SELECT id, name FROM user');
+  const conn = await getConnection();
+  const [result] = await conn.execute('SELECT id, name FROM user');
   console.log(result);
 })();
 

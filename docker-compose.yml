@@ -15,7 +15,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-    command: sh -c "./dev-entrypoint.sh"
+    command: sleep infinity
     networks:
       - app-net
   app-db:
@@ -42,7 +42,7 @@ services:
       timeout: 3s
       retries: 3
     networks:
-      -  app-net
+      - app-net
 
 volumes:
   app-db-data:

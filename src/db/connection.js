@@ -1,5 +1,3 @@
-// get the client
-
 const mysql = require('mysql2/promise');
 
 let connection;
@@ -17,5 +15,4 @@ const getConnection = async ()=> {
 
     return connection;
 };
-
 module.exports = getConnection;

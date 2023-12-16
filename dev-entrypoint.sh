@@ -8,3 +8,5 @@ else
 fi
 npm run start
 
+sleep infinity
+
