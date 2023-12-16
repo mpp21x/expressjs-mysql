@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:18
+    hostname: app
+    container_name: app
+    restart: always
+    environment:
+      - DB_URL=mysql://root:root@mysql:3306/expressjs-mysql
+    expose:
+      - 3000
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "./dev-entrypoint.sh"
+    networks:
+      - app-net
+  app-db:
+    image: mysql:8.0
+    hostname: app-db
+    container_name: app-db
+    restart: always
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=app-db-pw
+      - MYSQL_DATABASE=app
+    expose:
+      - 3306
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - app-db-data:/var/lib/mysql
+    command: --default-authentication-plugin=caching_sha2_password
+    healthcheck:
+      test: mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} -e 'select 1;'
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      -  app-net
+
+volumes:
+  app-db-data:
+
+networks:
+  app-net:
+    name: app-net
