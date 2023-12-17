@@ -42,7 +42,6 @@ app.use(function(err, req, res, next) {
 (async function() {
   const conn = await getConnection();
   const [result] = await conn.execute('SELECT id, name FROM user');
-  console.log(result);
 })();
 
 
